@@ -37,8 +37,8 @@
               Más que imágenes, contamos historias que conectan
             </p>
 
-            <v-btn color="primary" size="large">
-              Ver portafolio
+            <v-btn color="primary" size="large" @click="irAPortafolio">
+              Ver portafolio <v-icon right>mdi-arrow-right</v-icon>
             </v-btn>
           </div>
         </div>
@@ -46,6 +46,13 @@
     </div>
   </v-container>
 </template>
+
+<script setup lang="ts">
+const irAPortafolio = () => {
+  // Abrir instagram en nueva pestaña
+  window.open('https://www.instagram.com/nova_frame/', '_blank');
+};
+</script>
 
 <style scoped>
 .reel-wrapper {

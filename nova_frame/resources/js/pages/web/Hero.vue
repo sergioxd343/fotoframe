@@ -4,13 +4,20 @@
             <div class="overlay d-flex flex-column align-center justify-center text-white">
                 <h1 class="text-h2 font-weight-bold text-center">Tu historia merece verse increíble</h1>
                 <p class="text-subtitle-1 mt-4 text-center">Capturamos momentos con estilo cinematográfico</p>
-                <v-btn color="white" class="mt-6" variant="outlined"> Explorar </v-btn>
+                <v-btn color="white" class="mt-6" variant="outlined" @click="irAGaleria"> Explorar </v-btn>
             </div>
         </v-img>
     </v-container>
 </template>
 
 <script setup lang="ts">
+const irAGaleria = () => {
+    const seccion = document.getElementById('galeria');
+    if (seccion) {
+        const y = seccion.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+};
 </script>
 
 <style scoped>

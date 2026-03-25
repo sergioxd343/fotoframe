@@ -6,7 +6,7 @@
         <v-timeline align="center" side="end">
             <v-timeline-item v-for="(step, i) in steps" :key="i" :dot-color="'primary'" size="small">
                 <template #icon>
-                    <v-icon color="white">{{ step.icon }}</v-icon>
+                    <v-icon color="white" size="small" >{{ step.icon }}</v-icon>
                 </template>
 
                 <v-card class="pa-5 timeline-card" elevation="3">

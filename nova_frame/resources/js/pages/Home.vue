@@ -33,6 +33,11 @@
             <Paquetes />
         </section>
 
+        <!-- METODOS DE PAGO -->
+        <section id="metodos-pago">
+            <MetodosPago />
+        </section>
+
         <!-- FAQ -->
         <section id="faq">
             <FAQ />
@@ -72,6 +77,7 @@ import Paquetes from './web/Paquetes.vue';
 import Proceso from './web/Proceso.vue';
 import Reel from './web/Reel.vue';
 import Servicios from './web/Servicios.vue';
+import MetodosPago from './web/MetodosPago.vue';
 
 const isDark = ref(false);
 

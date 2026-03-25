@@ -1,28 +1,17 @@
 <template>
     <v-container class="py-16">
         <!-- HEADER -->
-        <div class="text-center mb-12">
+        <div class="mb-12 text-center">
             <h2 class="text-h4 font-weight-bold mb-2">Servicios</h2>
-            <p class="text-medium-emphasis">
-                Soluciones visuales diseñadas para capturar y contar tu historia
-            </p>
+            <p class="text-medium-emphasis">Soluciones visuales diseñadas para capturar y contar tu historia</p>
         </div>
 
         <!-- CARDS -->
         <v-row>
-            <v-col
-                cols="12"
-                md="4"
-                v-for="service in services"
-                :key="service.title"
-            >
-                <v-card
-                    elevation="4"
-                    class="pa-8 rounded-xl text-center hover-card d-flex flex-column justify-space-between"
-                    height="100%"
-                >
+            <v-col cols="12" md="4" v-for="service in services" :key="service.title">
+                <v-card elevation="4" class="pa-8 hover-card d-flex flex-column justify-space-between rounded-xl text-center" height="100%">
                     <!-- ICON -->
-                    <div class="icon-wrapper mb-4 mx-auto">
+                    <div class="icon-wrapper mx-auto mb-4">
                         <v-icon size="36" color="primary">
                             {{ service.icon }}
                         </v-icon>
@@ -39,52 +28,120 @@
                     </p>
 
                     <!-- CTA -->
-                    <v-btn
-                        variant="outlined"
-                        color="primary"
-                        class="mt-auto"
-                    >
-                        Ver más
-                    </v-btn>
+                    <v-btn variant="outlined" color="primary" class="mt-auto" @click="openDialog(service)"> Ver más </v-btn>
                 </v-card>
             </v-col>
         </v-row>
     </v-container>
+
+    <v-dialog v-model="dialog" max-width="520">
+        <v-card class="pa-6 rounded-xl">
+            <!-- ICONO -->
+            <div class="d-flex mb-4 justify-center">
+                <div class="icon-wrapper">
+                    <v-icon size="36" color="primary">
+                        {{ selectedService?.icon }}
+                    </v-icon>
+                </div>
+            </div>
+
+            <!-- TITULO -->
+            <h3 class="text-h6 font-weight-bold mb-2 text-center">
+                {{ selectedService?.title }}
+            </h3>
+
+            <!-- DESCRIPCIÓN -->
+            <p class="text-medium-emphasis mb-4 text-center">
+                {{ selectedService?.longDescription }}
+            </p>
+
+            <!-- INCLUYE -->
+            <div class="mb-4">
+                <p class="font-weight-medium mb-2">Incluye:</p>
+                <ul class="pl-4">
+                    <li v-for="item in selectedService?.includes" :key="item">
+                        {{ item }}
+                    </li>
+                </ul>
+            </div>
+
+            <!-- PAQUETE -->
+            <p class="text-caption text-medium-emphasis mb-4 text-center">
+                {{ selectedService?.package }}
+            </p>
+
+            <!-- CTA -->
+            <v-btn color="primary" block class="rounded-lg" @click="contactar(selectedService?.title)"> Cotizar servicio </v-btn>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 
+const dialog = ref(false);
+const selectedService = ref<any>(null);
+
+const openDialog = (service: any) => {
+    selectedService.value = service;
+    dialog.value = true;
+};
+
+const contactar = (servicio: string) => {
+    const mensaje = `Hola, me interesa el servicio de ${servicio}`;
+    window.open(`https://wa.me/5214772006766?text=${encodeURIComponent(mensaje)}`);
+};
+
 const services = ref([
     {
         title: 'Fotografía Profesional',
-        description: 'Cobertura completa con fotografía de alta calidad y edición cuidada.',
         icon: 'mdi-camera',
+        description: 'Cobertura completa con fotografía de alta calidad.',
+        longDescription:
+            'Capturamos cada momento importante con enfoque artístico y técnico. Desde detalles hasta emociones, todo queda documentado con calidad profesional.',
+        includes: ['Fotos ilimitadas en alta resolución', 'Edición profesional de color', 'Entrega digital optimizada'],
+        package: 'Desde ESENCIAL',
     },
     {
         title: 'Video Cinematográfico',
-        description: 'Desde highlights hasta video completo del evento con storytelling.',
         icon: 'mdi-video',
+        description: 'Videos con storytelling y calidad cinematográfica.',
+        longDescription: 'Creamos videos que cuentan tu historia con narrativa, ritmo y emoción. Ideal para revivir tu evento de forma impactante.',
+        includes: ['Highlight (1–4 min)', 'Video completo del evento', 'Edición cinematográfica'],
+        package: 'Desde PRO',
     },
     {
         title: 'Tomas Aéreas con Drone',
-        description: 'Captura perspectivas únicas que elevan la calidad visual de tu evento.',
         icon: 'mdi-drone',
+        description: 'Perspectivas únicas desde el aire.',
+        longDescription:
+            'Capturamos tomas aéreas que elevan la producción visual de tu evento, mostrando locaciones y momentos desde ángulos espectaculares.',
+        includes: ['Tomas aéreas estabilizadas', 'Integración en video final', 'Planeación de tomas'],
+        package: 'Desde PREMIUM',
     },
     {
         title: 'Tomas 360° & Creativas',
-        description: 'Contenido dinámico e impactante ideal para redes sociales.',
         icon: 'mdi-rotate-360',
+        description: 'Contenido dinámico ideal para redes.',
+        longDescription: 'Generamos contenido creativo en 360° que destaca en redes sociales y crea una experiencia inmersiva.',
+        includes: ['Videos dinámicos 360°', 'Contenido listo para redes', 'Enfoque creativo'],
+        package: 'Desde PRO',
     },
     {
         title: 'Contenido para Redes',
-        description: 'Reels verticales optimizados para Instagram y TikTok.',
         icon: 'mdi-cellphone-play',
+        description: 'Reels listos para Instagram y TikTok.',
+        longDescription: 'Creamos contenido vertical optimizado para redes sociales, listo para captar atención y generar impacto.',
+        includes: ['Reels verticales', 'Edición rápida y dinámica', 'Optimización para redes'],
+        package: 'Desde ELITE',
     },
     {
         title: 'Edición Profesional',
-        description: 'Color, ritmo y narrativa para lograr un resultado cinematográfico.',
         icon: 'mdi-palette',
+        description: 'Color, ritmo y narrativa profesional.',
+        longDescription: 'Transformamos el material en una pieza final con estilo cinematográfico, cuidando cada detalle visual y auditivo.',
+        includes: ['Corrección de color', 'Edición avanzada', 'Narrativa visual'],
+        package: 'Incluido en todos',
     },
 ]);
 </script>

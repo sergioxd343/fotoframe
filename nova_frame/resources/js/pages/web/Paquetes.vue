@@ -1,12 +1,20 @@
 <template>
     <v-container fluid class="packages-section py-16">
         <v-container>
-            <h2 class="mb-4 text-center">Paquetes</h2>
-            <p class="subtitle mb-12 text-center">Elige la experiencia que mejor capture tu historia</p>
+            <div class="mb-10 text-center">
+                <h2 class="text-h4 font-weight-bold mb-2">Paquetes</h2>
+                <p class="text-medium-emphasis">Elige la experiencia que mejor capture tu historia</p>
+            </div>
 
             <v-row justify="center" align="stretch">
-                <v-col cols="6" sm="6" xxs="12" md="6" lg="4" xl="3" xxl="3" v-for="pack in packages" :key="pack.title" class="d-flex">
-                    <v-card elevation="0" class="package-card d-flex flex-column" :class="{ featured: pack.featured }">
+                <v-col cols="12" sm="6" md="6" lg="4" xl="3" v-for="pack in packages" :key="pack.title" class="d-flex">
+                    <v-card
+                        elevation="0"
+                        class="package-card d-flex flex-column"
+                        :class="{ featured: pack.featured }"
+                        @click="openDialog(pack)"
+                        style="cursor: pointer"
+                    >
                         <!-- Badge -->
                         <div v-if="pack.featured" class="badge">MÁS POPULAR</div>
 
@@ -17,9 +25,22 @@
 
                             <!-- PRECIO -->
                             <div class="mb-4 text-center">
-                                <span class="currency">$</span>
-                                <span class="price">{{ pack.price }}</span>
-                                <span class="mxn">MXN</span>
+                                <!-- PRECIO ANTERIOR -->
+                                <div v-if="pack.oldPrice" class="old-price">${{ pack.oldPrice }} MXN</div>
+
+                                <!-- PRECIO ACTUAL -->
+                                <div>
+                                    <span class="currency">$</span>
+                                    <span class="price">{{ pack.price }}</span>
+                                    <span class="mxn">MXN</span>
+                                </div>
+
+                                <!-- AHORRO -->
+                                <div v-if="pack.oldPrice" class="discount">
+                                    Ahorra ${{
+                                        (parseFloat(pack.oldPrice.replace(',', '')) - parseFloat(pack.price.replace(',', ''))).toLocaleString()
+                                    }}
+                                </div>
                             </div>
 
                             <v-divider class="mb-4"></v-divider>
@@ -49,14 +70,64 @@
             </v-row>
         </v-container>
     </v-container>
+
+    <v-dialog v-model="dialog" max-width="520" transition="dialog-bottom-transition">
+        <v-card class="dialog-card">
+            <!-- HEADER -->
+            <div class="dialog-header">
+                <div>
+                    <h3 class="dialog-title">
+                        {{ selectedPack?.title }}
+                    </h3>
+                    <p class="dialog-price">${{ selectedPack?.price }} <span>MXN</span></p>
+                </div>
+
+                <!-- BOTÓN CERRAR -->
+                <v-btn icon variant="text" @click="dialog = false">
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+            </div>
+
+            <v-divider></v-divider>
+
+            <!-- CONTENIDO -->
+            <v-card-text class="dialog-content">
+                <v-list density="comfortable">
+                    <v-list-item v-for="(item, i) in selectedPack?.features" :key="i" class="dialog-item">
+                        <template #prepend>
+                            <v-icon size="20" color="primary">mdi-check-circle</v-icon>
+                        </template>
+
+                        <v-list-item-title class="dialog-feature-text">
+                            {{ item }}
+                        </v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-card-text>
+
+            <!-- FOOTER -->
+            <v-card-actions class="dialog-actions">
+                <v-btn block size="large" class="dialog-btn"> Reservar ahora </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
 
+const dialog = ref(false);
+const selectedPack = ref<any>(null);
+
+const openDialog = (pack: any) => {
+    selectedPack.value = pack;
+    dialog.value = true;
+};
+
 const packages = ref([
     {
         title: 'ESENCIAL',
-        price: '11,000.00',
+        price: '9,500.00',
+        oldPrice: '11,000.00',
         featured: false,
         features: [
             'Cobertura de 3–4 hora',
@@ -69,7 +140,8 @@ const packages = ref([
     },
     {
         title: 'PRO',
-        price: '15,500.00',
+        price: '13,500.00',
+        oldPrice: '15,500.00',
         featured: true,
         features: [
             'Cobertura de 4–6 horas',
@@ -82,7 +154,8 @@ const packages = ref([
     },
     {
         title: 'PREMIUM',
-        price: '20,000.00',
+        price: '17,000.00',
+        oldPrice: '20,000.00',
         featured: false,
         features: [
             'Cobertura de hasta 8 horas',
@@ -99,7 +172,8 @@ const packages = ref([
     },
     {
         title: 'ELITE',
-        price: '27,000.00',
+        price: '22,000.00',
+        oldPrice: '27,000.00',
         featured: false,
         features: [
             'Cobertura total del evento',
@@ -117,18 +191,19 @@ const packages = ref([
 <style scoped>
 .packages-section {
     background: rgb(var(--v-theme-background));
+
     .packages-section {
-    background: rgb(var(--v-theme-background));
-    overflow: visible;
-}
+        background: rgb(var(--v-theme-background));
+        overflow: visible;
+    }
 
-.v-container {
-    overflow: visible;
-}
+    .v-container {
+        overflow: visible;
+    }
 
-.v-row {
-    overflow: visible;
-}
+    .v-row {
+        overflow: visible;
+    }
 }
 
 .subtitle {
@@ -154,9 +229,23 @@ const packages = ref([
 
 /* FEATURED */
 .featured {
-    transform: scale(1.06);
     border: 2px solid #1976d2;
     box-shadow: 0 20px 50px rgba(25, 118, 210, 0.2);
+    transform: scale(1.06);
+}
+
+/* Solo aplica el scale en pantallas grandes */
+@media (min-width: 960px) {
+    .featured {
+        transform: scale(1.06);
+    }
+}
+
+.dialog-feature-text {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    display: block !important;
 }
 
 /* PRECIO */
@@ -180,7 +269,11 @@ const packages = ref([
 
 /* FEATURES */
 .feature-text {
-    font-size: 0.95rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 /* BOTONES */
@@ -226,5 +319,97 @@ const packages = ref([
     letter-spacing: 0.5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     text-align: center;
+}
+
+/* CARD GENERAL */
+.dialog-card {
+    border-radius: 20px;
+    padding: 10px 10px 16px;
+    backdrop-filter: blur(12px);
+}
+
+/* HEADER */
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px 8px;
+}
+
+/* TÍTULO */
+.dialog-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+/* PRECIO */
+.dialog-price {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1976d2;
+    margin: 2px 0 0;
+}
+
+.dialog-price span {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    margin-left: 4px;
+}
+
+/* CONTENIDO */
+.dialog-content {
+    padding: 8px 16px 0;
+}
+
+/* ITEMS */
+.dialog-item {
+    border-radius: 10px;
+    margin-bottom: 4px;
+    transition: background 0.2s ease;
+}
+
+.dialog-item:hover {
+    background: rgba(var(--v-theme-primary), 0.08);
+}
+
+/* TEXTO */
+.dialog-feature-text {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+}
+
+/* FOOTER */
+.dialog-actions {
+    padding: 16px 20px 8px;
+}
+
+/* BOTÓN */
+.dialog-btn {
+    border-radius: 12px;
+    font-weight: 600;
+    background: rgb(var(--v-theme-primary));
+    color: white;
+    box-shadow: 0 8px 20px rgba(25, 118, 210, 0.3);
+    transition: all 0.25s ease;
+}
+
+.dialog-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(25, 118, 210, 0.4);
+}
+
+.old-price {
+    font-size: 1rem;
+    color: rgba(var(--v-theme-on-surface), 0.5);
+    text-decoration: line-through;
+    margin-bottom: 4px;
+}
+
+.discount {
+    font-size: 0.8rem;
+    color: #2e7d32; /* verde */
+    font-weight: 600;
+    margin-top: 4px;
 }
 </style>

@@ -1,45 +1,88 @@
 <template>
-    <v-footer class="footer-section py-10">
-        <v-container>
-            <v-row class="text-md-left text-center">
-                <!-- BRAND -->
-                <v-col cols="12" md="4">
-                    <h3 class="mb-2">NovaFrame</h3>
-                    <p class="footer-text">Fotografía y video con estilo cinematográfico.</p>
-                </v-col>
+    <v-footer class="footer-section py-12">
+        <v-container class="text-center">
 
-                <!-- LINKS -->
-                <v-col cols="12" md="4">
-                    <h4 class="mb-2">Explorar</h4>
-                    <div class="d-flex flex-column footer-links">
-                        <a href="#">Servicios</a>
-                        <a href="#">Galería</a>
-                        <a href="#">Paquetes</a>
-                    </div>
-                </v-col>
+            <!-- LOGO + BRAND -->
+            <div class="d-flex flex-column align-center mb-6">
+                <v-avatar size="48" class="mb-3">
+                    <img src="/logos/logo.png" alt="logo" />
+                </v-avatar>
 
-                <!-- CONTACTO -->
-                <v-col cols="12" md="4">
-                    <h4 class="mb-2">Contacto</h4>
-                    <p class="footer-text">contacto@novaframe.com.mx</p>
+                <h2 class="brand-title mb-1">NovaFrame</h2>
+                <p class="footer-text">
+                    Fotografía y video cinematográfico
+                </p>
+            </div>
 
-                    <div class="d-flex justify-md-start ga-3 mt-2 justify-center">
-                        <v-btn icon variant="text">
-                            <v-icon>mdi-instagram</v-icon>
-                        </v-btn>
-                        <v-btn icon variant="text">
-                            <v-icon>mdi-facebook</v-icon>
-                        </v-btn>
-                        <v-btn icon variant="text">
-                            <v-icon>mdi-whatsapp</v-icon>
-                        </v-btn>
-                    </div>
-                </v-col>
-            </v-row>
+            <!-- LINKS -->
+            <div class="footer-links d-flex justify-center ga-8 mb-6">
+                <a href="#">Servicios</a>
+                <a href="#">Galería</a>
+                <a href="#">Paquetes</a>
+            </div>
 
-            <v-divider class="my-6"></v-divider>
+            <!-- SOCIAL -->
+            <div class="d-flex justify-center ga-4 mb-6">
+                <v-btn icon variant="text" size="small">
+                    <v-icon size="20">mdi-instagram</v-icon>
+                </v-btn>
+                <v-btn icon variant="text" size="small">
+                    <v-icon size="20">mdi-facebook</v-icon>
+                </v-btn>
+                <v-btn icon variant="text" size="small">
+                    <v-icon size="20">mdi-whatsapp</v-icon>
+                </v-btn>
+            </div>
 
-            <p class="footer-copy text-center">© 2026 NovaFrame · Todos los derechos reservados</p>
+            <!-- COPY -->
+            <div class="footer-copy">
+                © 2026 NovaFrame
+            </div>
+
         </v-container>
     </v-footer>
 </template>
+
+<style scoped>
+.footer-section {
+    color: #aaa;
+}
+
+.brand-title {
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.footer-text {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #888;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+.v-btn {
+    opacity: 0.6;
+    transition: all 0.25s ease;
+}
+
+.v-btn:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+}
+
+.footer-copy {
+    font-size: 0.75rem;
+    color: #555;
+    letter-spacing: 0.5px;
+}
+</style>
