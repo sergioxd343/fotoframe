@@ -18,6 +18,7 @@
                 <v-btn variant="text" class="nav-btn" href="#inicio">Inicio</v-btn>
                 <v-btn variant="text" class="nav-btn" href="#servicios">Servicios</v-btn>
                 <v-btn variant="text" class="nav-btn" href="#galeria">Galería</v-btn>
+                <v-btn variant="text" class="nav-btn" href="#paquetes">Paquetes</v-btn>
                 <v-btn variant="text" class="nav-btn" href="#contacto">Contacto</v-btn>
             </div>
 
